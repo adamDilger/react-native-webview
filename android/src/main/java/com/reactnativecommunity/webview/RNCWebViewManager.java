@@ -156,9 +156,15 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
               createWebViewEvent(webView, url)));
     }
 
+    private void startBrowserActivity(Context context, Uri uri) {
+      Intent openURL = new Intent(android.content.Intent.ACTION_VIEW);
+      openURL.setData(uri);
+      context.startActivity(openURL);
+    }
+
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-      dispatchEvent(view, new TopShouldStartLoadWithRequestEvent(view.getId(), url));
+      startBrowserActivity(view.getContext(), Uri.parse(url));
       return true;
     }
 
@@ -166,7 +172,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     @TargetApi(Build.VERSION_CODES.N)
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-      dispatchEvent(view, new TopShouldStartLoadWithRequestEvent(view.getId(), request.getUrl().toString()));
+      startBrowserActivity(view.getContext(), request.getUrl());
       return true;
     }
 
