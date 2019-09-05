@@ -78,9 +78,13 @@ static NSString *const MessageHanderName = @"ReactNative";
  */
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
 {
-  if (!navigationAction.targetFrame.isMainFrame) {
-    [webView loadRequest:navigationAction.request];
+  UIApplication *app = [UIApplication sharedApplication];
+  NSURL *url = navigationAction.request.URL;
+
+  if ([app canOpenURL:url]) {
+    [app openURL:url];
   }
+
   return nil;
 }
 
